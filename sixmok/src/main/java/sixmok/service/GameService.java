@@ -6,8 +6,8 @@ public class GameService {
 	private char[][] board;
 	private int maxDolLength;
 	
-	private int dr = 0;
-	private int dc = 0;
+	private int dRow = 0;
+	private int dCol = 0;
 	
 	private static final int MAX_VALUE = 19;
 	
@@ -16,7 +16,7 @@ public class GameService {
 		this.maxDolLength = 0;
 	}
 	
-	public void dfs(int now, int row, int col, Dol dol) {
+	public void searchLength(int now, int row, int col, Dol dol) {
 		if(row < 0 || col < 0 || row >= MAX_VALUE || col >= MAX_VALUE) {
 			maxDolLength = Math.max(now, maxDolLength);
 			return;
@@ -29,36 +29,41 @@ public class GameService {
 		
 		int nextRow = row;
 		int nextCol = col;
+		int next = now + 1;
 		
 		if(now == 0) {
-			int[] drArr = {1, 0, -1, -1, -1, 0, 1, 1};
-			int[] dcArr = {1, 1, 1, 0, -1, -1, -1, 0};
-			
-			for(int i = 0; i < 8; i++) {
-				dr = drArr[i];
-				dc = dcArr[i];
-				
-				nextRow += dr;
-				nextCol += dc;
-				
-				dfs(1, nextRow, nextCol, dol);
-				
-				nextRow -= dr;
-				nextCol -= dc;
-			}
+			initialSearch(nextRow, nextCol, next, dol);
+			return;
 		}
 		
-		nextRow += dr;
-		nextCol += dc;
+		nextRow += dRow;
+		nextCol += dCol;
 		
-		int next = now + 1;
-		dfs(next, nextRow, nextCol, dol);
+		searchLength(next, nextRow, nextCol, dol);
+	}
+
+	private void initialSearch(int nextRow, int nextCol, int next, Dol dol) {
+		int[] dRowArr = {1, 0, -1, -1, -1, 0, 1, 1};
+		int[] dColArr = {1, 1, 1, 0, -1, -1, -1, 0};
+		
+		for(int i = 0; i < 8; i++) {
+			dRow = dRowArr[i];
+			dCol = dColArr[i];
+			
+			nextRow += dRow;
+			nextCol += dCol;
+			
+			searchLength(next, nextRow, nextCol, dol);
+			
+			nextRow -= dRow;
+			nextCol -= dCol;
+		}
 	}
 	
 	public boolean isSixMok(Dol dol) {
 		for(int i = 0; i < MAX_VALUE; i++) {
 			for(int j = 0; j < MAX_VALUE; j++) {
-				dfs(0, i, j, dol);
+				searchLength(0, i, j, dol);
 			}
 		}
 		
