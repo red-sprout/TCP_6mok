@@ -16,6 +16,14 @@ public class GameService {
 		this.maxDolLength = 0;
 	}
 	
+	public void init() {
+		for(int i = 0; i < MAX_VALUE; i++) {
+			for(int j = 0; j < MAX_VALUE; j++) {
+				board[i][j] = Dol.BLANK.getDol();
+			}
+		}
+	}
+	
 	public void searchLength(int now, int row, int col, Dol dol) {
 		if(row < 0 || col < 0 || row >= MAX_VALUE || col >= MAX_VALUE) {
 			maxDolLength = Math.max(now, maxDolLength);
@@ -70,5 +78,17 @@ public class GameService {
 		boolean result = (maxDolLength == 6);
 		maxDolLength = 0;
 		return result;
+	}
+	
+	public void place(int row, int col, Dol dol) {
+		board[row][col] = dol.getDol();
+	}
+
+	public char[][] getBoard() {
+		return board;
+	}
+
+	public void setBoard(char[][] board) {
+		this.board = board;
 	}
 }
