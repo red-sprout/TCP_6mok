@@ -1,5 +1,7 @@
 package sixmok;
 
+import java.util.Arrays;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -12,9 +14,7 @@ import sixmok.service.GameService;
  *	BLANK('·');
  */
 public class ApplicationTest {
-	@Test
-	void test() {
-		char board[][] = {
+	char[][] board = {
 			{'·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·'},
 			{'·', '·', '●', '●', '●', '●', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·'},
 			{'·', '·', '·', '·', '·', '●', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·'},
@@ -23,7 +23,7 @@ public class ApplicationTest {
 			{'·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·'},
 			{'·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·'},
 			{'·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·'},
-			{'·', '·', '○', '○', '○', '○', '○', '○', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·'},
+			{'○', '○', '○', '○', '○', '○', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·'},
 			{'·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·'},
 			{'·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·'},
 			{'·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·'},
@@ -36,10 +36,22 @@ public class ApplicationTest {
 			{'·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·'},
 			{'·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·'},
 		};
-		
-		GameService service = new GameService(board);
-		
+	GameService service = new GameService(board);
+	
+	@Test
+	void test() {
 		Assertions.assertThat(service.isSixMok(Dol.BLACK)).isEqualTo(false);
 		Assertions.assertThat(service.isSixMok(Dol.WHITE)).isEqualTo(true);
+	}
+	
+	@Test
+	void print() {
+		service.place(2, 1, Dol.WHITE);
+		for(char[] row : board) {
+			for(char c : row) {
+				System.out.print(c + " ");
+			}
+			System.out.println();
+		}
 	}
 }
