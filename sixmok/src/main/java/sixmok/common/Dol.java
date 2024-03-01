@@ -1,4 +1,4 @@
-package sixmok.domain;
+package sixmok.common;
 
 public enum Dol {
 	BLACK('●'),

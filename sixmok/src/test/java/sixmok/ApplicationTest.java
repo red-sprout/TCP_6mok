@@ -1,12 +1,11 @@
 package sixmok;
 
-import java.util.Arrays;
-
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import sixmok.domain.Dol;
+import sixmok.common.Dol;
 import sixmok.service.GameService;
+import sixmok.view.Board;
 
 /*
  * 	BLACK('●'),
@@ -34,7 +33,6 @@ public class ApplicationTest {
 			{'·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·'},
 			{'·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·'},
 			{'·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·'},
-			{'·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·', '·'},
 		};
 	GameService service = new GameService(board);
 	
@@ -47,11 +45,6 @@ public class ApplicationTest {
 	@Test
 	void print() {
 		service.place(2, 1, Dol.WHITE);
-		for(char[] row : board) {
-			for(char c : row) {
-				System.out.print(c + " ");
-			}
-			System.out.println();
-		}
+		Board.print(board);
 	}
 }

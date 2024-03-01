@@ -1,6 +1,6 @@
 package sixmok.service;
 
-import sixmok.domain.Dol;
+import sixmok.common.Dol;
 
 public class GameService {
 	private char[][] board;
@@ -10,7 +10,11 @@ public class GameService {
 	private int dCol = 0;
 	
 	private static final int MAX_VALUE = 19;
-	
+
+	public GameService() {
+		super();
+	}
+
 	public GameService(char[][] board) {
 		this.board = board;
 		this.maxDolLength = 0;
@@ -75,13 +79,17 @@ public class GameService {
 			}
 		}
 		
-		boolean result = (maxDolLength == 6);
+		boolean result = (maxDolLength >= 6);
 		maxDolLength = 0;
 		return result;
 	}
 	
-	public void place(int row, int col, Dol dol) {
+	public boolean place(int row, int col, Dol dol) {
+		if(board[row][col] != Dol.BLANK.getDol()) {
+			return false;
+		}
 		board[row][col] = dol.getDol();
+		return true;
 	}
 
 	public char[][] getBoard() {
