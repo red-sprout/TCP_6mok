@@ -14,10 +14,8 @@ public class ClientReceive implements Runnable{
 
 	@Override
 	public void run() {
-		try (BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
-			while(true) {
-				
-			}
+		try (ObjectInputStream ois = new ObjectInputStream ois) {
+
 		} catch (IOException e) {
 		 	
 	 	}
