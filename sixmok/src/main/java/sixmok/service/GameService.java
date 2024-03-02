@@ -1,29 +1,20 @@
 package sixmok.service;
 
+import sixmok.common.Board;
 import sixmok.common.Dol;
 
 public class GameService {
-	private char[][] board;
-	private int maxDolLength;
+	private int maxDolLength = 0;
 	
 	private int dRow = 0;
 	private int dCol = 0;
 	
 	private static final int MAX_VALUE = 19;
-
-	public GameService() {
-		super();
-	}
-
-	public GameService(char[][] board) {
-		this.board = board;
-		this.maxDolLength = 0;
-	}
 	
 	public void init() {
 		for(int i = 0; i < MAX_VALUE; i++) {
 			for(int j = 0; j < MAX_VALUE; j++) {
-				board[i][j] = Dol.BLANK.getDol();
+				Board.setBoard(i, j, Dol.BLANK);
 			}
 		}
 	}
@@ -34,7 +25,7 @@ public class GameService {
 			return;
 		}
 		
-		if(board[row][col] != dol.getDol()) {
+		if(Board.getBoard()[row][col] != dol.getDol()) {
 			maxDolLength = Math.max(now, maxDolLength);
 			return;
 		}
@@ -85,18 +76,14 @@ public class GameService {
 	}
 	
 	public boolean place(int row, int col, Dol dol) {
-		if(board[row][col] != Dol.BLANK.getDol()) {
+		if(Board.getBoard()[row][col] != Dol.BLANK.getDol()) {
 			return false;
 		}
-		board[row][col] = dol.getDol();
+		Board.setBoard(row, col, dol);
 		return true;
 	}
 
 	public char[][] getBoard() {
-		return board;
-	}
-
-	public void setBoard(char[][] board) {
-		this.board = board;
+		return Board.getBoard();
 	}
 }

@@ -1,7 +1,10 @@
 package sixmok.view;
 
-public class Board {
+import sixmok.common.Dol;
+
+public class BoardView {
 	public static void print(char[][] board) {
+		System.out.println();
 		for(int i = 0; i <= board[0].length; i++) {
 			if(i == 0) {
 				System.out.print("  ");
@@ -18,5 +21,14 @@ public class Board {
 			}
 			System.out.println();
 		}
+	}
+	
+	public static Dol switchDol(Dol dol) {
+		if(dol == Dol.BLACK) {
+			dol = Dol.WHITE;
+		} else {
+			dol = Dol.BLACK;
+		}
+		return dol;
 	}
 }
