@@ -1,6 +1,12 @@
 package sixmok.model.vo;
 
-public class Nowuser {
+import java.io.Serializable;
+
+import sixmok.common.Dol;
+
+@SuppressWarnings("serial")
+public class Nowuser implements Serializable{
+	private Dol dol;
 	private Gameuser user;
 	private History history;
 	
@@ -28,5 +34,13 @@ public class Nowuser {
 
 	public void setHistory(History history) {
 		this.history = history;
+	}
+
+	public Dol getDol() {
+		return dol;
+	}
+
+	public void setDol(Dol dol) {
+		this.dol = dol;
 	}
 }

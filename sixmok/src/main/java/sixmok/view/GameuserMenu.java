@@ -57,7 +57,8 @@ public class GameuserMenu {
 				new Offline().play();
 				break;
 			case 2:
-				new Online().play();
+				int[] arr = new OnlineClient(gc.now).play();
+				gc.updateHistory(arr[0], arr[1], arr[2]);
 				break;
 			case 3:
 				MessageView.displaySuccess("변경 전 다시 로그인합니다");

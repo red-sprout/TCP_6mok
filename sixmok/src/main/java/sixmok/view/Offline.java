@@ -27,7 +27,7 @@ public class Offline {
 		System.out.println("\n===오프라인 육목 플레이===");
 		
 		do {
-			BoardView.print(game.getBoard());
+			BoardView.print(game.getBoard(), System.out);
 			System.out.printf("\n첫 수입니다. %s", INPUT_MESSAGE);
 			position = sc.nextLine();
 		
@@ -46,7 +46,7 @@ public class Offline {
 		dol = BoardView.switchDol(dol);
 		
 		while(!exit) {
-			BoardView.print(game.getBoard());
+			BoardView.print(game.getBoard(), System.out);
 
 			placeDol(row1, col1, dol, 1);
 			if(exit) break;
@@ -89,7 +89,7 @@ public class Offline {
 		}
 		
 		if(game.isSixMok(dol)) {
-			BoardView.print(game.getBoard());
+			BoardView.print(game.getBoard(), System.out);
 			System.out.println(dol.getDol() + " 승리!!");
 			exit = true;
 		}
