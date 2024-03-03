@@ -7,7 +7,7 @@ import sixmok.model.vo.Nowuser;
 import sixmok.view.MessageView;
 
 public class GameuserController {
-	private Nowuser now = null;
+	public Nowuser now = null;
 	
 	public boolean loginGameuser(String userId, String userPwd) {
 		Gameuser user = new GameuserDao().loginGameuser(userId, userPwd);
@@ -71,6 +71,16 @@ public class GameuserController {
 			MessageView.displaySuccess("탈퇴 성공");
 		} else {
 			MessageView.displayFail("탈퇴 실패");
+		}
+	}
+	
+	public void updateHistory(int win, int draw, int lose) {
+		int result = new GameuserDao().updateHistory(this.nowId(), win, draw, lose);
+		
+		if (result > 0) {
+			MessageView.displaySuccess("정보 수정 성공");
+		} else {
+			MessageView.displayFail("정보 수정 실패");
 		}
 	}
 	

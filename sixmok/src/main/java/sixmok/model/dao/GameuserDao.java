@@ -174,6 +174,41 @@ public class GameuserDao {
 		
 		return result;
 	}
+	
+	public int updateHistory(String userId, int win, int draw, int lose) {
+		int result = 0;
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		String sql = "UPDATE HISTORY SET "
+				+ "WIN = ?, "
+				+ "DRAW = ?, "
+				+ "LOSE = ? "
+				+ "WHERE USERID = ?";
+		
+		try {
+			conn = oracleConnection();
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, win);
+			pstmt.setInt(2, draw);
+			pstmt.setInt(3, lose);
+			pstmt.setString(4, userId);
+			
+			result = pstmt.executeUpdate();
+			
+			commit(result, conn);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(conn, pstmt);
+		}
+		
+		return result;
+	}
 
 	public Connection oracleConnection() throws ClassNotFoundException, SQLException {
 		Connection conn;
