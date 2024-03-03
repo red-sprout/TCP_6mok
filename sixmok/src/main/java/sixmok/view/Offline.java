@@ -24,8 +24,6 @@ public class Offline {
 		
 		game.init();
 		
-		System.out.println("\n===오프라인 육목 플레이===");
-		
 		do {
 			BoardView.print(game.getBoard(), System.out);
 			System.out.printf("\n첫 수입니다. %s", INPUT_MESSAGE);

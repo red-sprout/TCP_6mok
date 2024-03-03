@@ -76,7 +76,7 @@ public class OnlineClient {
 					break;
 				}
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 
 		} finally {
 			try {

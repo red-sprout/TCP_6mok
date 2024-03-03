@@ -53,9 +53,9 @@ public class GameuserController {
 		int result = new GameuserDao().updateGameuser(user);
 		
 		if (result > 0) {
-			MessageView.displaySuccess("정보 수정 성공");
+			MessageView.displaySuccess("전적에 반영되었습니다.");
 		} else {
-			MessageView.displayFail("정보 수정 실패");
+			MessageView.displayFail("전적 반영되지 않았습니다.");
 		}
 	}
 	

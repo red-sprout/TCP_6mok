@@ -56,7 +56,7 @@ public class OnlineServer {
 				
 				BoardView.print(Board.getBoard(), System.out);
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			
 		} finally {
 			try {

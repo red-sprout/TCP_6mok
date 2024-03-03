@@ -4,6 +4,11 @@ import java.util.Scanner;
 
 import sixmok.controller.GameuserController;
 
+/*
+ * 	BLACK('●'),
+ *	WHITE('○'),
+ *	BLANK('·');
+ */
 public class GameuserMenu {
 	private Scanner sc = new Scanner(System.in);
 	private GameuserController gc = new GameuserController();
@@ -14,10 +19,23 @@ public class GameuserMenu {
 	public void beforeMainMenu() {
 		int menu = 0;
 		while(true) {
-			System.out.println("===육목 게임===");
-			System.out.println("1. 로그인");
-			System.out.println("2. 회원가입");
-			System.out.println("0. 프로그램 종료");
+			System.out.println("========================================");
+			System.out.println("|······································|");
+			System.out.println("|·····●●●●●●●●●··········○○○○○○○○○·····|");
+			System.out.println("|····●·········●·········○·······○·····|");
+			System.out.println("|····●·········●·········○·······○·····|");
+			System.out.println("|·····●●●●●●●●●··········○○○○○○○○○·····|");
+			System.out.println("|····●●●●●●●●●●●·············○·········|");
+			System.out.println("|······●·····●··········○○○○○○○○○○○····|");
+			System.out.println("|······●·····●·························|");
+			System.out.println("|·····●●●●●●●●●··········○○○○○○○○○·····|");
+			System.out.println("|·············●··················○·····|");
+			System.out.println("|·············●··················○·····|");
+			System.out.println("|······································|");
+			System.out.println("========================================\n");
+			System.out.println("1. 로그인\n");
+			System.out.println("2. 회원 가입\n");
+			System.out.println("0. 프로그램 종료\n");
 			menu = inputMenu();
 			switch(menu) {
 			case 1:
@@ -43,20 +61,28 @@ public class GameuserMenu {
 		
 		System.out.println("\n" + userName + "님 환영합니다!");
 		while(true) {
-			System.out.println("\n===메인 메뉴===");
-			System.out.println("1. 오프라인 플레이");
-			System.out.println("2. 온라인 플레이");
-			System.out.println("3. 유저정보 수정");
-			System.out.println("4. 전적 조회");
-			System.out.println("5. 회원 탈퇴");
-			System.out.println("0. 로그아웃");
+			System.out.println("\n===========================================");
+			System.out.println("··················메인 메뉴··················");
+			System.out.println("===========================================\n");
+			System.out.println("1. 오프라인 플레이\n");
+			System.out.println("2. 온라인 플레이\n");
+			System.out.println("3. 유저정보 수정\n");
+			System.out.println("4. 전적 조회\n");
+			System.out.println("5. 회원 탈퇴\n");
+			System.out.println("0. 로그아웃\n");
 			menu = inputMenu();
 			
 			switch(menu) {
 			case 1:
+				System.out.println("\n==========================================");
+				System.out.println("··················오프라인··················");
+				System.out.println("==========================================\n");
 				new Offline().play();
 				break;
 			case 2:
+				System.out.println("\n==========================================");
+				System.out.println("···················온라인···················");
+				System.out.println("==========================================\n");
 				int[] arr = new OnlineClient(gc.now).play();
 				gc.updateHistory(arr[0], arr[1], arr[2]);
 				break;
@@ -91,7 +117,9 @@ public class GameuserMenu {
 	}
 	
 	public boolean loginMenu() {
-		System.out.println("===로그인===");
+		System.out.println("\n========================================");
+		System.out.println("··················로그인··················");
+		System.out.println("========================================\n");
 		
 		String userId = inputId();
 		System.out.print("패스워드 : ");
@@ -101,7 +129,9 @@ public class GameuserMenu {
 	}
 	
 	public void insertMenu() {
-		System.out.println("===회원 가입===");
+		System.out.println("\n=========================================");
+		System.out.println("·················회원 가입·················");
+		System.out.println("=========================================\n");
 		
 		String userId = inputId();
 		System.out.print("패스워드 : ");
@@ -115,7 +145,9 @@ public class GameuserMenu {
 	}
 	
 	public void updateMenu() {
-		System.out.println("===유저정보 수정===");
+		System.out.println("\n===========================================");
+		System.out.println("················유저 정보 수정················");
+		System.out.println("===========================================\n");
 		System.out.print("변경 패스워드 : ");
 		String userPwd = sc.nextLine();
 		System.out.print("변경 닉네임 : ");
@@ -127,14 +159,18 @@ public class GameuserMenu {
 	}
 	
 	public void searchMenu() {
-		System.out.println("===전적 조회===");
+		System.out.println("\n=========================================");
+		System.out.println("·················전적 조회·················");
+		System.out.println("=========================================\n");
 		String userId = inputId();
 		
 		gc.searchHistory(userId);
 	}
 	
 	public void deleteMenu() {
-		System.out.println("===회원 탈퇴===");
+		System.out.println("\n===========================================");
+		System.out.println("··················회원 탈퇴··················");
+		System.out.println("===========================================\n");
 		System.out.println("탈퇴 전 아이디를 다시 입력해주기 바랍니다.");
 		String inputId = inputId();
 		
