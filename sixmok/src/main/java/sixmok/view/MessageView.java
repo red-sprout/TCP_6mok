@@ -1,5 +1,7 @@
 package sixmok.view;
 
+import java.util.ArrayList;
+
 import sixmok.model.vo.Gameuser;
 import sixmok.model.vo.History;
 
@@ -23,5 +25,11 @@ public class MessageView {
 	public static void displayHistory(History history) {
 		System.out.println(SUCCESS);
 		System.out.println(history.toString());
+	}
+	
+	public static <E> void displayList(ArrayList<E> list) {
+		for(int i = 0; i < list.size(); i++) {
+			System.out.println((i + 1) + ". " + list.get(i).toString());
+		}
 	}
 }

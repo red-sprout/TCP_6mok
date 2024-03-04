@@ -74,17 +74,10 @@ public class GameuserMenu {
 			
 			switch(menu) {
 			case 1:
-				System.out.println("\n==========================================");
-				System.out.println("··················오프라인··················");
-				System.out.println("==========================================\n");
 				new Offline().play();
 				break;
 			case 2:
-				System.out.println("\n==========================================");
-				System.out.println("···················온라인···················");
-				System.out.println("==========================================\n");
-				int[] arr = new OnlineClient(gc.now).play();
-				gc.updateHistory(arr[0], arr[1], arr[2]);
+				waitingRoom();
 				break;
 			case 3:
 				MessageView.displaySuccess("변경 전 다시 로그인합니다");
@@ -168,9 +161,9 @@ public class GameuserMenu {
 	}
 	
 	public void deleteMenu() {
-		System.out.println("\n===========================================");
-		System.out.println("··················회원 탈퇴··················");
-		System.out.println("===========================================\n");
+		System.out.println("\n=========================================");
+		System.out.println("·················회원 탈퇴··················");
+		System.out.println("==========================================\n");
 		System.out.println("탈퇴 전 아이디를 다시 입력해주기 바랍니다.");
 		String inputId = inputId();
 		
@@ -194,5 +187,56 @@ public class GameuserMenu {
 			sc.nextLine();
 			return -1;
 		}
+	}
+	
+	public void waitingRoom() {
+		int menu = 0;
+		
+		while(true) {
+			System.out.println("\n===========================================");
+			System.out.println("··················대기 메뉴··················");
+			System.out.println("===========================================\n");
+		
+			System.out.println("1. 참여 가능한 방\n");
+			System.out.println("2. 방 만들기\n");
+			System.out.println("0. 메인 메뉴\n");
+			
+			menu = inputMenu();
+			
+			switch(menu) {
+			case 1:
+				findRoom();
+				return;
+			case 2:
+				makeRoom();
+				gc.deleteRoom();
+				return;
+			case 0:
+				MessageView.displaySuccess("메인 메뉴로 돌아갑니다.");
+				return;
+			default:
+				MessageView.displayFail("잘못 입력하셨습니다. 다시 입력해주세요.");
+			}
+		}
+	}
+	
+	public void findRoom() {
+		System.out.println("\n==========================================");
+		System.out.println("···················방 목록··················");
+		System.out.println("==========================================\n");
+		
+		gc.selectRoom();
+		System.out.println("(이외의 입력) 메인 메뉴\n");
+		int menu = inputMenu();
+		gc.selectOneRoom(menu);
+	}
+	
+	public void makeRoom() {
+		System.out.println("\n===========================================");
+		System.out.println("··················방 만들기··················");
+		System.out.println("===========================================\n");
+		System.out.print("방 이름을 입력하세요 : ");
+		String roomName = sc.nextLine();
+		gc.insertRoom(roomName);
 	}
 }

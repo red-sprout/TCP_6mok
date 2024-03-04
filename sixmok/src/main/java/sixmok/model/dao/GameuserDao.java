@@ -5,9 +5,11 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import sixmok.model.vo.Gameuser;
 import sixmok.model.vo.History;
+import sixmok.model.vo.Room;
 
 public class GameuserDao {
 	public Gameuser loginGameuser(String userId, String userPwd) {
@@ -208,6 +210,36 @@ public class GameuserDao {
 		}
 		
 		return result;
+	}
+	
+	public ArrayList<Room> searchRoom() {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		ArrayList<Room> list = new ArrayList<>();
+		String sql = "SELECT * FROM ROOM";
+		
+		try {
+			conn = oracleConnection();
+			pstmt = conn.prepareStatement(sql);
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				Room room = new Room();
+				room.setRoomName(rset.getString("ROOMNAME"));
+				room.setUserName(rset.getString("USERNAME"));
+				room.setUserId(rset.getString("USERID"));
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(conn, pstmt, rset);
+		}
+		
+		return list;
 	}
 
 	public Connection oracleConnection() throws ClassNotFoundException, SQLException {

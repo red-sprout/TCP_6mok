@@ -43,4 +43,9 @@ public class Nowuser implements Serializable{
 	public void setDol(Dol dol) {
 		this.dol = dol;
 	}
+
+	@Override
+	public String toString() {
+		return  user.getUserName() + "(" + user.getUserId() + ")";
+	}
 }
