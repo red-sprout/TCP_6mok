@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import sixmok.common.JDBCTemplate;
+import sixmok.common.template.JDBCTemplate;
 import sixmok.model.vo.Room;
 
 public class RoomDao {

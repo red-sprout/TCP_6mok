@@ -14,7 +14,7 @@ import sixmok.view.MessageView;
 import sixmok.view.OnlineClient;
 import sixmok.view.OnlineServer;
 
-public class GameuserController {
+public class SixmokController {
 	public Nowuser now = null;
 	
 	public boolean loginGameuser(String userId, String userPwd) {
@@ -67,18 +67,20 @@ public class GameuserController {
 		}
 	}
 	
-	public void deleteGameuser(String inputId, String userId) {
+	public boolean deleteGameuser(String inputId, String userId) {
 		if (!inputId.equals(userId)) {
 			MessageView.displayFail("탈퇴 실패");
-			return;
+			return false;
 		}
 		
 		int result = new GameuserDao().deleteGameuser(userId);
 		
 		if (result > 0) {
 			MessageView.displaySuccess("탈퇴 성공");
+			return true;
 		} else {
 			MessageView.displayFail("탈퇴 실패");
+			return false;
 		}
 	}
 	

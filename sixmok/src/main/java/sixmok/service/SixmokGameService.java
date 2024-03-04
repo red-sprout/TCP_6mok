@@ -3,7 +3,7 @@ package sixmok.service;
 import sixmok.common.Board;
 import sixmok.common.Dol;
 
-public class GameService {
+public class SixmokGameService {
 	private int maxDolLength = 0;
 	
 	private int dRow = 0;

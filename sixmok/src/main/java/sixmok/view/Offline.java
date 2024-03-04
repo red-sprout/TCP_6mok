@@ -2,13 +2,14 @@ package sixmok.view;
 
 import java.util.Scanner;
 
+import sixmok.common.Decoration;
 import sixmok.common.Dol;
-import sixmok.service.GameService;
+import sixmok.service.SixmokGameService;
 
 public class Offline {
 	private boolean exit = false;
 	private Scanner sc = new Scanner(System.in);
-	private GameService game = new GameService();
+	private SixmokGameService game = new SixmokGameService();
 	
 	private static final String INPUT_MESSAGE = "착수할 곳을 입력하세요(예시 : Aa) : ";
 	
@@ -24,9 +25,7 @@ public class Offline {
 		
 		game.init();
 		
-		System.out.println("\n==========================================");
-		System.out.println("··················오프라인··················");
-		System.out.println("==========================================\n");
+		System.out.println(Decoration.title("오프라인"));
 		
 		do {
 			BoardView.print(game.getBoard(), System.out);
@@ -92,7 +91,7 @@ public class Offline {
 		
 		if(game.isSixMok(dol)) {
 			BoardView.print(game.getBoard(), System.out);
-			System.out.println(dol.getDol() + " 승리!!");
+			System.out.println("\n" + Decoration.event(dol.getDol() + " 승리!!"));
 			exit = true;
 		}
 	}

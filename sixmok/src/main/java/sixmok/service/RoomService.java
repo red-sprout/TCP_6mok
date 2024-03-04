@@ -3,7 +3,7 @@ package sixmok.service;
 import java.sql.Connection;
 import java.util.ArrayList;
 
-import sixmok.common.JDBCTemplate;
+import sixmok.common.template.JDBCTemplate;
 import sixmok.model.dao.RoomDao;
 import sixmok.model.vo.Room;
 

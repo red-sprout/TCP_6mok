@@ -2,7 +2,8 @@ package sixmok.view;
 
 import java.util.Scanner;
 
-import sixmok.controller.GameuserController;
+import sixmok.common.Decoration;
+import sixmok.controller.SixmokController;
 
 /*
  * 	BLACK('●'),
@@ -11,7 +12,7 @@ import sixmok.controller.GameuserController;
  */
 public class GameuserMenu {
 	private Scanner sc = new Scanner(System.in);
-	private GameuserController gc = new GameuserController();
+	private SixmokController gc = new SixmokController();
 	
 	private static String userId;
 	private static String userName;
@@ -19,20 +20,7 @@ public class GameuserMenu {
 	public void beforeMainMenu() {
 		int menu = 0;
 		while(true) {
-			System.out.println("========================================");
-			System.out.println("|······································|");
-			System.out.println("|·····●●●●●●●●●··········○○○○○○○○○·····|");
-			System.out.println("|····●·········●·········○·······○·····|");
-			System.out.println("|····●·········●·········○·······○·····|");
-			System.out.println("|·····●●●●●●●●●··········○○○○○○○○○·····|");
-			System.out.println("|····●●●●●●●●●●●·············○·········|");
-			System.out.println("|······●·····●··········○○○○○○○○○○○····|");
-			System.out.println("|······●·····●·························|");
-			System.out.println("|·····●●●●●●●●●··········○○○○○○○○○·····|");
-			System.out.println("|·············●··················○·····|");
-			System.out.println("|·············●··················○·····|");
-			System.out.println("|······································|");
-			System.out.println("========================================\n");
+			System.out.println(Decoration.beforeMainMenu);
 			System.out.println("1. 로그인\n");
 			System.out.println("2. 회원 가입\n");
 			System.out.println("0. 프로그램 종료\n");
@@ -59,11 +47,10 @@ public class GameuserMenu {
 		userId = gc.nowId();
 		userName = gc.nowName();
 		
-		System.out.println("\n" + userName + "님 환영합니다!");
+		System.out.println("\n");
+		System.out.println(Decoration.event(userName + "님 환영합니다!"));
 		while(true) {
-			System.out.println("\n===========================================");
-			System.out.println("··················메인 메뉴··················");
-			System.out.println("===========================================\n");
+			System.out.println(Decoration.title("메인 메뉴"));
 			System.out.println("1. 오프라인 플레이\n");
 			System.out.println("2. 온라인 플레이\n");
 			System.out.println("3. 유저정보 수정\n");
@@ -87,7 +74,7 @@ public class GameuserMenu {
 				searchMenu();
 				break;
 			case 5:
-				deleteMenu();
+				if(deleteMenu()) return;
 				break;
 			case 0:
 				MessageView.displaySuccess("로그아웃 성공");
@@ -110,9 +97,7 @@ public class GameuserMenu {
 	}
 	
 	public boolean loginMenu() {
-		System.out.println("\n========================================");
-		System.out.println("··················로그인··················");
-		System.out.println("========================================\n");
+		System.out.println(Decoration.title("로그인"));
 		
 		String userId = inputId();
 		System.out.print("패스워드 : ");
@@ -122,9 +107,7 @@ public class GameuserMenu {
 	}
 	
 	public void insertMenu() {
-		System.out.println("\n=========================================");
-		System.out.println("·················회원 가입·················");
-		System.out.println("=========================================\n");
+		System.out.println(Decoration.title("회원 가입"));
 		
 		String userId = inputId();
 		System.out.print("패스워드 : ");
@@ -138,9 +121,7 @@ public class GameuserMenu {
 	}
 	
 	public void updateMenu() {
-		System.out.println("\n===========================================");
-		System.out.println("················유저 정보 수정················");
-		System.out.println("===========================================\n");
+		System.out.println(Decoration.title("유저정보 수정"));
 		System.out.print("변경 패스워드 : ");
 		String userPwd = sc.nextLine();
 		System.out.print("변경 닉네임 : ");
@@ -152,22 +133,18 @@ public class GameuserMenu {
 	}
 	
 	public void searchMenu() {
-		System.out.println("\n=========================================");
-		System.out.println("·················전적 조회·················");
-		System.out.println("=========================================\n");
+		System.out.println(Decoration.title("전적 조회"));
 		String userId = inputId();
 		
 		gc.searchHistory(userId);
 	}
 	
-	public void deleteMenu() {
-		System.out.println("\n=========================================");
-		System.out.println("·················회원 탈퇴··················");
-		System.out.println("==========================================\n");
+	public boolean deleteMenu() {
+		System.out.println(Decoration.title("회원 탈퇴"));
 		System.out.println("탈퇴 전 아이디를 다시 입력해주기 바랍니다.");
 		String inputId = inputId();
 		
-		gc.deleteGameuser(inputId, userId);
+		return gc.deleteGameuser(inputId, userId);
 	}
 
 	public String inputId() {
@@ -193,10 +170,7 @@ public class GameuserMenu {
 		int menu = 0;
 		
 		while(true) {
-			System.out.println("\n===========================================");
-			System.out.println("··················대기 메뉴··················");
-			System.out.println("===========================================\n");
-		
+			System.out.println(Decoration.title("대기 메뉴"));
 			System.out.println("1. 참여 가능한 방\n");
 			System.out.println("2. 방 만들기\n");
 			System.out.println("0. 메인 메뉴\n");
@@ -221,20 +195,17 @@ public class GameuserMenu {
 	}
 	
 	public void findRoom() {
-		System.out.println("\n==========================================");
-		System.out.println("···················방 목록··················");
-		System.out.println("==========================================\n");
-		
+		System.out.println(Decoration.title("방 목록"));
 		gc.selectRoom();
-		System.out.println("(이외의 입력) 메인 메뉴\n");
+		System.out.println("\n(메인 메뉴로 돌아가려면 숫자 제외 아무거나 입력하세요.)\n");
+		
 		int menu = inputMenu();
+		
 		gc.selectOneRoom(menu);
 	}
 	
 	public void makeRoom() {
-		System.out.println("\n===========================================");
-		System.out.println("··················방 만들기··················");
-		System.out.println("===========================================\n");
+		System.out.println(Decoration.title("방 만들기"));
 		System.out.print("방 이름을 입력하세요 : ");
 		String roomName = sc.nextLine();
 		gc.insertRoom(roomName);

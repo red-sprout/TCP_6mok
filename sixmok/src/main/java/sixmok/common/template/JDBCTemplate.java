@@ -1,4 +1,4 @@
-package sixmok.common;
+package sixmok.common.template;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
