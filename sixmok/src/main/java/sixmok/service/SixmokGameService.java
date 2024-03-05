@@ -21,12 +21,12 @@ public class SixmokGameService {
 	
 	public void searchLength(int nowLength, int row, int col, Dol dol) {
 		if(row < 0 || col < 0 || row >= MAX_VALUE || col >= MAX_VALUE) {
-			updateLength(nowLength);
+			updateStatus(nowLength);
 			return;
 		}
 		
 		if(Board.getBoard()[row][col] != dol.getDol()) {
-			updateLength(nowLength);
+			updateStatus(nowLength);
 			return;
 		}
 		
@@ -87,11 +87,12 @@ public class SixmokGameService {
 		return Board.getBoard();
 	}
 	
-	public void updateLength(int nowLength) {
+	public void updateStatus(int nowLength) {
 		if(nowLength == 6) {
 			dolLength = nowLength;
-		} else {
-			dolLength = Math.max(dolLength, nowLength);
+			return;
 		}
+		
+		dolLength = Math.max(dolLength, nowLength);
 	}
 }
