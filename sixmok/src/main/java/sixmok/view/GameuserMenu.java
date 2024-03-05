@@ -5,11 +5,6 @@ import java.util.Scanner;
 import sixmok.common.Decoration;
 import sixmok.controller.SixmokController;
 
-/*
- * 	BLACK('●'),
- *	WHITE('○'),
- *	BLANK('·');
- */
 public class GameuserMenu {
 	private Scanner sc = new Scanner(System.in);
 	private SixmokController gc = new SixmokController();
@@ -136,7 +131,7 @@ public class GameuserMenu {
 		System.out.println(Decoration.title("전적 조회"));
 		String userId = inputId();
 		
-		gc.searchHistory(userId);
+		gc.selectHistoryByUserId(userId);
 	}
 	
 	public boolean deleteMenu() {
