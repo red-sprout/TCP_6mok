@@ -4,7 +4,7 @@ import sixmok.common.Board;
 import sixmok.common.Dol;
 
 public class SixmokGameService {
-	private int maxDolLength = 0;
+	private int dolLength = 0;
 	
 	private int dRow = 0;
 	private int dCol = 0;
@@ -19,22 +19,22 @@ public class SixmokGameService {
 		}
 	}
 	
-	public void searchLength(int now, int row, int col, Dol dol) {
+	public void searchLength(int nowLength, int row, int col, Dol dol) {
 		if(row < 0 || col < 0 || row >= MAX_VALUE || col >= MAX_VALUE) {
-			maxDolLength = Math.max(now, maxDolLength);
+			updateLength(nowLength);
 			return;
 		}
 		
 		if(Board.getBoard()[row][col] != dol.getDol()) {
-			maxDolLength = Math.max(now, maxDolLength);
+			updateLength(nowLength);
 			return;
 		}
 		
 		int nextRow = row;
 		int nextCol = col;
-		int next = now + 1;
+		int next = nowLength + 1;
 		
-		if(now == 0) {
+		if(nowLength == 0) {
 			initialSearch(nextRow, nextCol, next, dol);
 			return;
 		}
@@ -70,8 +70,8 @@ public class SixmokGameService {
 			}
 		}
 		
-		boolean result = (maxDolLength >= 6);
-		maxDolLength = 0;
+		boolean result = (dolLength == 6);
+		dolLength = 0;
 		return result;
 	}
 	
@@ -85,5 +85,13 @@ public class SixmokGameService {
 
 	public char[][] getBoard() {
 		return Board.getBoard();
+	}
+	
+	public void updateLength(int nowLength) {
+		if(nowLength == 6) {
+			dolLength = nowLength;
+		} else {
+			dolLength = Math.max(dolLength, nowLength);
+		}
 	}
 }
