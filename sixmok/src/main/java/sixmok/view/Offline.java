@@ -68,9 +68,14 @@ public class Offline {
 			position = sc.nextLine();
 			
 			if(position.equals("exit")) {
-				System.out.println(BoardView.switchDol(dol).getDol() + " 승리!!");
+				System.out.println("\n" + Decoration.event(BoardView.switchDol(dol).getDol() + " 승리!!"));
 				exit = true;
 				break;
+			}
+			
+			if(position.length() != 2) {
+				MessageView.displayFail("잘못 입력하셨습니다. 다시 입력해주세요.");
+				continue;
 			}
 			
 			row1 = position.charAt(0) - 'A';
