@@ -1,52 +1,39 @@
 package sixmok.controller;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 
-import sixmok.model.dao.GameuserDao;
 import sixmok.model.vo.Gameuser;
 import sixmok.model.vo.History;
 import sixmok.model.vo.Nowuser;
 import sixmok.model.vo.Room;
+import sixmok.service.GameuserService;
+import sixmok.service.HistoryService;
 import sixmok.service.RoomService;
+import sixmok.service.TCPService;
+import sixmok.view.GamePlayOnlineClient;
+import sixmok.view.GamePlayOnlineServer;
 import sixmok.view.MessageView;
-import sixmok.view.OnlineClient;
-import sixmok.view.OnlineServer;
 
 public class SixmokController {
 	public Nowuser now = null;
 	
 	public boolean loginGameuser(String userId, String userPwd) {
-		Gameuser user = new GameuserDao().loginGameuser(userId, userPwd);
+		Gameuser user = new GameuserService().loginGameuser(userId, userPwd);
 
 		if (user == null) {
 			MessageView.displayFail("로그인 실패");
 			return false;
 		} else {
 			MessageView.displaySuccess("로그인 성공");
-			History history = new GameuserDao().searchHistory(userId);
+			History history = new HistoryService().selectHistoryByUserId(userId);
 			now = new Nowuser(user, history);
 			return true;
 		}
  	}
 
-
-	public void searchHistory(String userId) {
-		History history = new GameuserDao().searchHistory(userId);
-		
-		if (history == null) {
-			MessageView.displayFail("전적을 찾을 수 없습니다.");
-		} else {
-			MessageView.displayHistory(history);
-		}
-	}
-	
-	
 	public void insertGameuser(String userId, String userPwd, String userName, String phone) {
 		Gameuser user = new Gameuser(userId, userPwd, userName, phone);
-		
-		int result = new GameuserDao().insertGameuser(user);
+		int result = new GameuserService().insertGameuser(user);
 		
 		if (result > 0) {
 			MessageView.displaySuccess("회원가입 성공");
@@ -58,7 +45,7 @@ public class SixmokController {
 	public void updateGameuser(String userId, String userPwd, String userName, String phone) {
 		Gameuser user = new Gameuser(userId, userPwd, userName, phone);
 		
-		int result = new GameuserDao().updateGameuser(user);
+		int result = new GameuserService().updateGameuser(user);
 		
 		if (result > 0) {
 			MessageView.displaySuccess("정보 수정 성공");
@@ -73,7 +60,7 @@ public class SixmokController {
 			return false;
 		}
 		
-		int result = new GameuserDao().deleteGameuser(userId);
+		int result = new GameuserService().deleteGameuser(userId);
 		
 		if (result > 0) {
 			MessageView.displaySuccess("탈퇴 성공");
@@ -84,8 +71,19 @@ public class SixmokController {
 		}
 	}
 	
+	public void selectHistoryByUserId(String userId) {
+		History history = new HistoryService().selectHistoryByUserId(userId);
+		
+		if (history == null) {
+			MessageView.displayFail("전적을 찾을 수 없습니다.");
+		} else {
+			MessageView.displayHistory(history);
+		}
+	}
+	
 	public void updateHistory(int win, int draw, int lose) {
-		int result = new GameuserDao().updateHistory(this.nowId(), win, draw, lose);
+		History history = new History(this.nowId(), win, draw, lose);
+		int result = new HistoryService().updateHistory(history);
 		
 		if (result > 0) {
 			MessageView.displaySuccess("전적에 반영되었습니다.");
@@ -110,7 +108,7 @@ public class SixmokController {
 		if(room == null) {
 			MessageView.displaySuccess("메인메뉴로 돌아갑니다.");
 		} else {
-			int[] arr = new OnlineClient().play(now, room);
+			int[] arr = new GamePlayOnlineClient().play(now, room);
 			this.updateHistory(arr[0], arr[1], arr[2]);
 		}
 	}
@@ -118,23 +116,16 @@ public class SixmokController {
 	public void insertRoom(String roomName) {
 		String userName = now.getUser().getUserName();
 		String userId = now.getUser().getUserId();
-		
-		String serverIP = null;
-		try {
-			serverIP = InetAddress.getLocalHost().getHostAddress(); // 본인의 IP로 설정
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		}
-		
-		int port = 8000; // 포트는 8000으로 우선 설정;
+		String serverIP = new TCPService().getIP();
+		int port = new TCPService().getPort(serverIP); // 시간이 오래 걸림. 대기
+//		int port = 8000; // 임시로 8000으로 잡기
 		
 		Room room = new Room(roomName, userName, userId, serverIP, port);
-		
 		int result = new RoomService().insertRoom(room);
 		
 		if (result > 0) {
 			MessageView.displaySuccess("상대를 기다리는 중입니다...");
-			int[] arr = new OnlineServer().play(now, room);
+			int[] arr = new GamePlayOnlineServer().play(now, room);
 			this.updateHistory(arr[0], arr[1], arr[2]);
 		} else {
 			MessageView.displayFail("방 생성 실패");
@@ -148,6 +139,8 @@ public class SixmokController {
 		
 		if (result > 0) {
 			MessageView.displaySuccess("게임이 종료되어 방이 삭제되었습니다.");
+		} else {
+			MessageView.displayFail("방 삭제 실패");
 		}
 	}
 	
