@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
 
@@ -14,28 +13,24 @@ import sixmok.common.Decoration;
 import sixmok.common.Dol;
 import sixmok.model.vo.Nowuser;
 import sixmok.model.vo.Room;
-import sixmok.service.SixmokGameService;
 
-public class OnlineServer implements Online {
-	private SixmokGameService game = new SixmokGameService();
+public class GamePlayOnlineClient implements GamePlay {
+	
 	private Scanner sc = new Scanner(System.in);
-	
-	private static final String INPUT_MESSAGE = "착수할 곳을 입력하세요(예시 : Aa) : ";
-	
-    @Override
+
+	@Override
 	public int[] play(Nowuser user, Room room) {
-    	System.out.println(Decoration.title("온라인"));
-    	
+		System.out.println(Decoration.title("온라인"));
+		
     	BufferedReader br = null;
     	PrintWriter pw = null;
     	
     	int port = room.getUserPort();
-    	
-    	ServerSocket server;
+    	String serverIP = room.getUserIP();
     	Socket socket;
-    	try {
-    		server = new ServerSocket(port);
-    		socket = server.accept();
+    	
+    	try {    		
+			socket = new Socket(serverIP, port);
 			
 			br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "utf-8"));
@@ -54,44 +49,47 @@ public class OnlineServer implements Online {
 		}
     	
     	return new int[] {user.getHistory().getWin(), user.getHistory().getDraw(), user.getHistory().getLose()};
-    }
+	}
+	
+	@Override
+	public void initialTurn(Nowuser user, BufferedReader br, PrintWriter pw) throws IOException {
+		game.init();
+		
+		pw.println("맞대결 상대 : " + user.toString());
+		pw.flush();
+		String opponent = br.readLine();
+		System.out.println("\n" + opponent);
+		
+		BoardView.print(Board.getBoard(), System.out);
+		
+		System.out.print("\n(첫 수)");
+		String sendFirst = checkPosition(0);
+		pw.println(sendFirst);
+		pw.flush();
+		
+		game.place(sendFirst.charAt(0) - 'A', sendFirst.charAt(1) - 'a', Dol.BLACK);
+		BoardView.print(Board.getBoard(), System.out);
+	}
 
 	@Override
 	public void gameAfterInitialTurn(Nowuser user, BufferedReader br, PrintWriter pw) throws IOException {
 		while(true) {
-			myTurn(pw);
+			opponentTurn(br);
 			
 			if(game.isSixMok(Dol.WHITE)) {
-				win(user);
+				lose(user);
 				break;
 			}
 			
-			opponentTurn(br);
+			myTurn(pw);
 			
 			if(game.isSixMok(Dol.BLACK)) {
-				lose(user);
+				win(user);
 				break;
 			}
 		}
 	}
 
-	@Override
-	public void initialTurn(Nowuser user, BufferedReader br, PrintWriter pw) throws IOException {
-		game.init();
-		
-		String opponent = br.readLine();
-		System.out.println("\n" + opponent);
-		pw.println("맞대결 상대 : " + user.toString());
-		pw.flush();
-		
-		System.out.println("\n상대가 첫 수를 두는 중입니다.");
-		
-		String msgFirst = br.readLine();
-		
-		game.place(msgFirst.charAt(0) - 'A', msgFirst.charAt(1) - 'a', Dol.BLACK);
-		BoardView.print(Board.getBoard(), System.out);
-	}
-	
 	@Override
 	public void myTurn(PrintWriter pw) {
 		String send;
@@ -115,12 +113,12 @@ public class OnlineServer implements Online {
 			msg = br.readLine();
 			row = msg.charAt(0) - 'A';
 			col = msg.charAt(1) - 'a';
-			game.place(row, col, Dol.BLACK);
+			game.place(row, col, Dol.WHITE);
 		}
 		
 		BoardView.print(Board.getBoard(), System.out);
 	}
-	
+
 	@Override
 	public void win(Nowuser user) {
 		BoardView.print(game.getBoard(), System.out);
@@ -134,7 +132,7 @@ public class OnlineServer implements Online {
 		System.out.println("\n당신의 패배...");
 		user.getHistory().setLose(user.getHistory().getLose() + 1);
 	}
-	
+
 	@Override
 	public String checkPosition(int i) {
 		int row = 0;
@@ -146,6 +144,11 @@ public class OnlineServer implements Online {
 			System.out.print("\n당신의 " + (i + 1) + "번째 차례입니다. " + INPUT_MESSAGE);
 			send = sc.nextLine();
 			
+			if(send.length() != 2) {
+				MessageView.displayFail("잘못 입력하셨습니다. 다시 입력해주세요.");
+				continue;
+			}
+			
 			row = send.charAt(0) - 'A';
 			col = send.charAt(1) - 'a';
 			
@@ -154,7 +157,7 @@ public class OnlineServer implements Online {
 				continue;
 			}
 			
-			if(!game.place(row, col, Dol.WHITE)) {
+			if(!game.place(row, col, Dol.BLACK)) {
 				MessageView.displayFail("이미 착수된 곳입니다. 다시 입력해주세요.");
 				continue;
 			}
