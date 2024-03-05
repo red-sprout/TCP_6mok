@@ -38,7 +38,7 @@ public class Decoration {
 	public static String event(String msg) {
 		StringBuilder sb = new StringBuilder();
 		
-		sb.append("****************************************").append("\n"); // = : 40개
+		sb.append("****************************************").append("\n"); // * : 40개
 		
 		for(int i = 0; i <= 22 - msg.length(); i++) {
 			sb.append(" ");
