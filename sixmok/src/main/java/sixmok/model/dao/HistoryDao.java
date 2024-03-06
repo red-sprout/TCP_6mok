@@ -1,20 +1,33 @@
 package sixmok.model.dao;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Properties;
 
 import sixmok.common.template.JDBCTemplate;
 import sixmok.model.vo.History;
 
 public class HistoryDao {
+	private Properties prop = new Properties();
+	
+	public HistoryDao() {
+		try {
+			prop.loadFromXML(new FileInputStream(JDBCTemplate.QUERY_XML));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public History selectHistoryByUserId(Connection connection, String userId) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		
 		History history = null;
-		String sql = "SELECT * FROM HISTORY WHERE USERID = ?";
+		String sql = prop.getProperty("selectHistoryByUserId");
 		
 		try {
 			pstmt = connection.prepareStatement(sql);
@@ -45,11 +58,7 @@ public class HistoryDao {
 
 		PreparedStatement pstmt = null;
 		
-		String sql = "UPDATE HISTORY SET "
-				+ "WIN = ?, "
-				+ "DRAW = ?, "
-				+ "LOSE = ? "
-				+ "WHERE USERID = ?";
+		String sql = prop.getProperty("updateHistory");
 		
 		try {
 			pstmt = connection.prepareStatement(sql);

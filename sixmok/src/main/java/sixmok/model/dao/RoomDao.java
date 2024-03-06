@@ -1,22 +1,35 @@
 package sixmok.model.dao;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Properties;
 
 import sixmok.common.template.JDBCTemplate;
 import sixmok.model.vo.Room;
 
 public class RoomDao {
+	private Properties prop = new Properties();
+	
+	public RoomDao() {
+		try {
+			prop.loadFromXML(new FileInputStream(JDBCTemplate.QUERY_XML));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public ArrayList<Room> selectRoom(Connection conn) {
 		Statement stmt = null;
 		ResultSet rset = null;
 		
 		ArrayList<Room> list = new ArrayList<>();
-		String sql = "SELECT * FROM ROOM";
+		String sql = prop.getProperty("selectRoom");
 		
 		try {
 			stmt = conn.createStatement();
@@ -48,10 +61,7 @@ public class RoomDao {
 		ResultSet rset = null;
 		
 		Room room = null;
-		String sql = "SELECT * "
-				+ "FROM (SELECT ROWNUM R, ROOMNAME, USERNAME, USERID, USERIP, USERPORT "
-				+ "FROM ROOM) "
-				+ "WHERE R = ?";
+		String sql = prop.getProperty("selectOneRoom");
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -82,7 +92,7 @@ public class RoomDao {
 		PreparedStatement pstmt = null;
 		
 		int result = 0;
-		String sql = "INSERT INTO ROOM VALUES(?, ?, ?, ?, ?)";
+		String sql = prop.getProperty("insertRoom");
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -106,7 +116,7 @@ public class RoomDao {
 		PreparedStatement pstmt = null;
 		
 		int result = 0;
-		String sql = "DELETE FROM ROOM WHERE USERID = ?";
+		String sql = prop.getProperty("deleteRoom");
 		
 		try {
 			pstmt = conn.prepareStatement(sql);

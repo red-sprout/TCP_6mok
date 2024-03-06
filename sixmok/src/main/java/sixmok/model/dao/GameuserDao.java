@@ -1,20 +1,33 @@
 package sixmok.model.dao;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Properties;
 
 import sixmok.common.template.JDBCTemplate;
 import sixmok.model.vo.Gameuser;
 
 public class GameuserDao {
+	private Properties prop = new Properties();
+	
+	public GameuserDao() {
+		try {
+			prop.loadFromXML(new FileInputStream(JDBCTemplate.QUERY_XML));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public Gameuser loginGameuser(Connection connection, String userId, String userPwd) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		
 		Gameuser user = null;
-		String sql = "SELECT * FROM GAMEUSER WHERE USERID = ? AND USERPWD = ?";
+		String sql = prop.getProperty("loginGameuser");
 		
 		try {
 			pstmt = connection.prepareStatement(sql);
@@ -48,7 +61,7 @@ public class GameuserDao {
 
 		PreparedStatement pstmt = null;
 		
-		String sql = "INSERT INTO GAMEUSER VALUES(SEQ_USERNO.NEXTVAL, ?, ?, ?, ?, DEFAULT)";
+		String sql = prop.getProperty("insertGameuser");
 		
 		try {
 			pstmt = connection.prepareStatement(sql);
@@ -73,11 +86,7 @@ public class GameuserDao {
 
 		PreparedStatement pstmt = null;
 		
-		String sql = "UPDATE GAMEUSER SET "
-				+ "USERPWD = ?, "
-				+ "USERNAME = ?, "
-				+ "PHONE = ? "
-				+ "WHERE USERID = ?";
+		String sql = prop.getProperty("updateGameuser");
 		
 		try {
 			pstmt = connection.prepareStatement(sql);
@@ -102,7 +111,7 @@ public class GameuserDao {
 
 		PreparedStatement pstmt = null;
 		
-		String sql = "DELETE FROM HISTORY WHERE USERID = ?";
+		String sql = prop.getProperty("deleteGameuser");
 		
 		try {
 			pstmt = connection.prepareStatement(sql);

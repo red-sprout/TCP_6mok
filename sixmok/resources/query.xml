@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>Query</comment>
+	<entry key="test">SUCCESS QUERY</entry>
+	<entry key="loginGameuser">
+		SELECT * 
+		FROM GAMEUSER 
+		WHERE USERID = ? 
+		AND USERPWD = ?
+	</entry>
+	<entry key="insertGameuser">
+		INSERT INTO GAMEUSER 
+		VALUES(SEQ_USERNO.NEXTVAL, ?, ?, ?, ?, DEFAULT)
+	</entry>
+	<entry key="updateGameuser">
+		UPDATE GAMEUSER 
+		SET USERPWD = ?, 
+		USERNAME = ?, 
+		PHONE = ? 
+		WHERE USERID = ?
+	</entry>
+	<entry key="deleteGameuser">
+		DELETE FROM HISTORY 
+		WHERE USERID = ?
+	</entry>
+	<entry key="selectHistoryByUserId">
+		SELECT * FROM HISTORY 
+		WHERE USERID = ?
+	</entry>
+	<entry key="updateHistory">
+		UPDATE HISTORY SET 
+		WIN = ?, 
+		DRAW = ?, 
+		LOSE = ? 
+		WHERE USERID = ?
+	</entry>
+	<entry key="selectRoom">
+		SELECT * FROM ROOM
+	</entry>
+	<entry key="selectOneRoom">
+		SELECT * 
+		FROM (SELECT ROWNUM R, ROOMNAME, USERNAME, USERID, USERIP, USERPORT 
+		FROM ROOM) 
+		WHERE R = ?
+	</entry>
+	<entry key="insertRoom">
+		INSERT INTO ROOM 
+		VALUES(?, ?, ?, ?, ?)
+	</entry>
+	<entry key="deleteRoom">
+		DELETE FROM ROOM WHERE USERID = ?
+	</entry>
+</properties>
